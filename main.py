@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import engine
@@ -19,4 +20,9 @@ app.add_middleware(
 
 database = r"sql_app.db"
 
-
+@app.post("/register/", response_model=schemas.UserResponse)
+def create_user(
+    user: schemas.User,
+    db: Session = Depends(get_db)
+):
+    return crud.create_user(db=db, user=user)

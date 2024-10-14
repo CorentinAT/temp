@@ -1,7 +1,7 @@
-import schemas, models
+from . import schemas, models
 from sqlalchemy import update, or_, func
 from sqlalchemy.orm import Session
-from get_db import get_db
+from . import get_db
 from passlib.hash import sha256_crypt
 from datetime import datetime, timedelta
 
@@ -9,7 +9,7 @@ def create_user(db:Session, user:schemas.User):
     hashed_password = sha256_crypt.hash(user.password)
     db_user = models.User(
         username = user.username,
-        password = hashed_password
+        hashed_password = hashed_password
     )
     db.add(db_user)
     db.commit()
@@ -66,7 +66,7 @@ def get_association_by_id(db:Session, id_association:int):
 def get_user_by_id(db:Session, username:int):
     return db.query(models.User).filter(models.User.username == username).first()
 
-def delete_association(db:Session, id_association:Int) :
+def delete_association(db:Session, id_association:int) :
     db_association: schemas.Association = get_association_by_id(db=db, id_association=id_association)
     db.delete(db_association)
     db.commit()
