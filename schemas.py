@@ -15,19 +15,21 @@ class User(BaseModel):
 class Word(BaseModel):
     word: str
 
+class GameModel(BaseModel):
+    id_user: int
+    creation_date: datetime.date
+
 class Card(BaseModel):
     id_card: int
     word: Word
     type: CardType
-
-class GameModel(BaseModel):
-    id_gamemodel: int
-    id_user: int
-    matrix: List[List[Card]]
-    creation_date: datetime.date
+    gamemodel: GameModel
 
 class Game(BaseModel):
     id_user: int
     id_gamemodel: int
     nb_rounds: int
-    date: datetime.date
+
+class Association(BaseModel):
+    id_gamemodel: int
+    key_word: str
